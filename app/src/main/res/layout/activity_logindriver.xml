@@ -49,7 +49,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/emailtxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -65,14 +65,14 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/pwtxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/forgotpwtxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"

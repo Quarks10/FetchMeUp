@@ -50,7 +50,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/desttxt"
+                            android:id="@+id/messtxt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Where are you now?"

@@ -1,21 +1,22 @@
-package com.urbantechies.fetch_me_up;
+package com.urbantechies.fetch_me_up.drivers;
 
 
 import android.os.Bundle;
-
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.fragment.app.Fragment;
+
+import com.urbantechies.fetch_me_up.R;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AboutFragment extends Fragment {
+public class TripDetailFragment extends Fragment {
 
 
-    public AboutFragment() {
+    public TripDetailFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +25,7 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about, container, false);
+        return inflater.inflate(R.layout.fragment_trip_detail, container, false);
     }
 
 }

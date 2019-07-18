@@ -1,5 +1,4 @@
-package com.urbantechies.fetch_me_up;
-
+package com.urbantechies.fetch_me_up.drivers;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -9,16 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.urbantechies.fetch_me_up.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class WalletFragment extends Fragment {
 
+public class InboxFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_wallet, container, false);
+        return inflater.inflate(R.layout.fragment_inbox,container, false);
     }
 }

@@ -1,4 +1,4 @@
-package com.urbantechies.fetch_me_up;
+package com.urbantechies.fetch_me_up.drivers;
 
 
 import android.os.Bundle;
@@ -7,14 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.urbantechies.fetch_me_up.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class MainMapFragment extends Fragment {
 
 
-    public HomeFragment() {
+    public MainMapFragment() {
         // Required empty public constructor
     }
 

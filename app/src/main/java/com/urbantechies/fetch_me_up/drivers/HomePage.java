@@ -1,8 +1,10 @@
-package com.urbantechies.fetch_me_up;
+package com.urbantechies.fetch_me_up.drivers;
 
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.urbantechies.fetch_me_up.R;
+
 import androidx.fragment.app.Fragment;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -41,7 +43,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
         if (savedInstanceState == null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment,
-                    new HomeFragment()).commit();
+                    new MainMapFragment()).commit();
             bottomNavigationView.setSelectedItemId(R.id.nav_home);
         }
 
@@ -58,7 +60,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
                     switch (menuItem.getItemId()){
                         case R.id.nav_home:
-                            selectedFragment = new HomeFragment();
+                            selectedFragment = new MainMapFragment();
                             break;
                         case R.id.nav_request:
                             selectedFragment = new PassengerRequestFragment();

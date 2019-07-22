@@ -4,10 +4,21 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.urbantechies.fetch_me_up.R;
+import com.urbantechies.fetch_me_up.UserClient;
+import com.urbantechies.fetch_me_up.model.User;
+import com.urbantechies.fetch_me_up.model.UserLocation;
 import com.urbantechies.fetch_me_up.ui.logindriver;
 
 import androidx.appcompat.app.AlertDialog;
@@ -19,13 +30,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+
 import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
@@ -45,7 +59,9 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     private NavigationView navigationView;
     private BottomNavigationView bottomNavigationView;
     private boolean mLocationPermissionGranted = false;
-
+    private FusedLocationProviderClient mFusedLocationClient;
+    private FirebaseFirestore mDb;
+    private UserLocation mUserLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +70,9 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mDb = FirebaseFirestore.getInstance();
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -67,7 +86,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment,
                     new MainMapFragment()).commit();
             bottomNavigationView.setSelectedItemId(R.id.nav_home);
@@ -76,14 +95,88 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     }
 
 
+    private void getUserDetails(){
+        if (mUserLocation == null){
+            mUserLocation = new UserLocation();
+
+            DocumentReference userRef = mDb.collection(getString(R.string.collection_users))
+                    .document(FirebaseAuth.getInstance().getUid());
+
+            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        Log.d(TAG, "onComplete: successfly get the user details");
+
+                        User user = task.getResult().toObject(User.class);
+                        mUserLocation.setUser(user);
+                        ((UserClient)getApplicationContext()).setUser(user);
+                        getLastKnownLocation();
+                    }
+                }
+            });
+        }
+        else{
+            getLastKnownLocation();
+        }
+    }
+
+
+    private void saveUserLocation(){
+
+        if(mUserLocation != null){
+            DocumentReference locationRef = mDb.
+                    collection(getString(R.string.collection_user_locations))
+                    .document(FirebaseAuth.getInstance().getUid());
+
+            locationRef.set(mUserLocation).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        Log.d(TAG, "saveUserLocation: \ninserted user location into database." +
+                                "\n latitude: " + mUserLocation.getGeo_point().getLatitude() +
+                                "\n longitude: " + mUserLocation.getGeo_point().getLongitude());
+                    }
+                }
+            });
+        }
+    }
+
+
+    private void getLastKnownLocation() {
+        Log.d(TAG, "getLastKnownLocation: called.");
+
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                if(task.isSuccessful()){
+                    Location location = task.getResult();
+                    GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                    Log.d(TAG, "onComplete: latitude: " + geoPoint.getLatitude());
+
+
+                    mUserLocation.setGeo_point(geoPoint);
+                    mUserLocation.setTimestamp(null);
+                    saveUserLocation();
+                }
+            }
+        });
+    }
+
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
-        if(checkMapServices()){
-            if(mLocationPermissionGranted){
+        if (checkMapServices()) {
+            if (mLocationPermissionGranted) {
                 //getChatrooms();
-            }
-            else{
+               getUserDetails();
+            } else {
                 getLocationPermission();
             }
         }
@@ -97,16 +190,16 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.action_sign_out:{
+        switch (item.getItemId()) {
+            case R.id.action_sign_out: {
                 signOut();
                 return true;
             }
-            case R.id.action_profile:{
-            //    startActivity(new Intent(this, ProfileActivity.class));
+            case R.id.action_profile: {
+                //    startActivity(new Intent(this, ProfileActivity.class));
                 return true;
             }
-            default:{
+            default: {
                 return super.onOptionsItemSelected(item);
             }
         }
@@ -114,13 +207,15 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     }
 
 
-    private void signOut(){
+    private void signOut() {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, logindriver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
+
+
 
     private boolean checkMapServices(){
         if(isServicesOK()){
@@ -165,6 +260,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
+            getUserDetails();
             //getChatrooms(); maybe can be used to load where are other users
         } else {
             ActivityCompat.requestPermissions(this,
@@ -218,6 +314,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
                 if(mLocationPermissionGranted){
                     //getChatrooms();
+                    getUserDetails();
                 }
                 else{
                     getLocationPermission();

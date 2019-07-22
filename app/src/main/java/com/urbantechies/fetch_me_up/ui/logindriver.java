@@ -125,7 +125,7 @@ public class logindriver extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 Log.d(TAG, "onComplete: successfully set the user client.");
                                 User user = task.getResult().toObject(User.class);
-                               // ((UserClient)(getApplicationContext())).setUser(user);
+                                ((UserClient)(getApplicationContext())).setUser(user);
                             }
                         }
                     });

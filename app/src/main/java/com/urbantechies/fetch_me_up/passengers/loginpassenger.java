@@ -1,4 +1,4 @@
-package com.urbantechies.fetch_me_up.ui;
+package com.urbantechies.fetch_me_up.passengers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,13 +24,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.urbantechies.fetch_me_up.R;
+import com.urbantechies.fetch_me_up.UserClient;
 import com.urbantechies.fetch_me_up.drivers.HomePage;
 import com.urbantechies.fetch_me_up.model.User;
-import com.urbantechies.fetch_me_up.UserClient;
+import com.urbantechies.fetch_me_up.ui.logindriver;
+import com.urbantechies.fetch_me_up.ui.signupdriver;
 
 import static android.text.TextUtils.isEmpty;
 
-public class logindriver extends AppCompatActivity {
+public class loginpassenger extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
@@ -49,7 +51,7 @@ public class logindriver extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_logindriver);
+        setContentView(R.layout.activity_loginpassenger);
 
         signin_btn = findViewById(R.id.signinbtn);
         signup_btn = findViewById(R.id.signupbtn);
@@ -69,14 +71,14 @@ public class logindriver extends AppCompatActivity {
             public void onClick(View view) {
                 signIn();
                 //Intent toHomepage = new Intent(logindriver.this, HomePage.class);
-               // startActivity(toHomepage);
+                // startActivity(toHomepage);
             }
         });
 
         signup_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toSignUp = new Intent(logindriver.this, signupdriver.class);
+                Intent toSignUp = new Intent(loginpassenger.this, signuppassenger.class);
                 toSignUp.putExtra("currMode", currMode);
                 startActivity(toSignUp);
             }
@@ -112,7 +114,7 @@ public class logindriver extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Toast.makeText(logindriver.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(loginpassenger.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -134,7 +136,7 @@ public class logindriver extends AppCompatActivity {
                         }
                     });
 
-                    Intent intent = new Intent(logindriver.this, HomePage.class);
+                    Intent intent = new Intent(loginpassenger.this, HomePage.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
@@ -182,15 +184,12 @@ public class logindriver extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(logindriver.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(loginpassenger.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                     hideDialog();
                 }
             });
         }else{
-            Toast.makeText(logindriver.this, "You didn't fill in all the fields.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(loginpassenger.this, "You didn't fill in all the fields.", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
 }

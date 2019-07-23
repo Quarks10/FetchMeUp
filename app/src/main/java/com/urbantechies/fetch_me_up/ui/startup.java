@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.urbantechies.fetch_me_up.R;
+import com.urbantechies.fetch_me_up.passengers.loginpassenger;
 
 public class startup extends AppCompatActivity {
 
@@ -27,6 +28,16 @@ public class startup extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent toLogin = new Intent(startup.this, logindriver.class);
+                toLogin.putExtra("currMode", "Driver");
+                startActivity(toLogin);
+            }
+        });
+
+        passenger_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toLogin = new Intent(startup.this, loginpassenger.class);
+                toLogin.putExtra("currMode", "Passenger");
                 startActivity(toLogin);
             }
         });

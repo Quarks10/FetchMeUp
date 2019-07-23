@@ -55,5 +55,11 @@
     <string name="action_profile">Profile</string>
 
 
+    <!-- Firestore Syahir Strings -->
+    <string name="collection_drivers">Drivers</string>
+    <string name="collection_passengers">Passengers</string>
+    <string name="collection_driver_locations">Driver Locations</string>
+    <string name="collection_passenger_locations">Passenger Locations</string>
+
 
 </resources>

@@ -21,10 +21,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.urbantechies.fetch_me_up.R;
-import com.urbantechies.fetch_me_up.model.Driver;
 import com.urbantechies.fetch_me_up.model.Passenger;
-import com.urbantechies.fetch_me_up.ui.logindriver;
-import com.urbantechies.fetch_me_up.ui.signupdriver;
 
 import static android.text.TextUtils.isEmpty;
 import static com.urbantechies.fetch_me_up.util.Check.doStringsMatch;

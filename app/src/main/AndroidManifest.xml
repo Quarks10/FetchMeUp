@@ -10,7 +10,7 @@
         android:required="true" />
 
     <application
-        android:name=".UserClient"
+        android:name=".DriverClient"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,8 +19,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".passengers.loginpassenger"></activity>
         <activity android:name=".passengers.signuppassenger" />
-        <activity android:name=".ui.signupdriver" />
-        <activity android:name=".ui.logindriver" />
+        <activity android:name=".drivers.signupdriver" />
+        <activity android:name=".drivers.logindriver" />
         <activity android:name=".drivers.HomePage" />
         <activity android:name=".ui.startup">
             <intent-filter>

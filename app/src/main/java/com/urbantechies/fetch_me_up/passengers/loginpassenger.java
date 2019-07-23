@@ -27,8 +27,6 @@ import com.urbantechies.fetch_me_up.R;
 import com.urbantechies.fetch_me_up.UserClient;
 import com.urbantechies.fetch_me_up.drivers.HomePage;
 import com.urbantechies.fetch_me_up.model.User;
-import com.urbantechies.fetch_me_up.ui.logindriver;
-import com.urbantechies.fetch_me_up.ui.signupdriver;
 
 import static android.text.TextUtils.isEmpty;
 

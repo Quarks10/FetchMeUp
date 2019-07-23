@@ -15,11 +15,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.urbantechies.fetch_me_up.DriverClient;
 import com.urbantechies.fetch_me_up.R;
 import com.urbantechies.fetch_me_up.UserClient;
+import com.urbantechies.fetch_me_up.model.Driver;
+import com.urbantechies.fetch_me_up.model.DriverLocation;
 import com.urbantechies.fetch_me_up.model.User;
 import com.urbantechies.fetch_me_up.model.UserLocation;
-import com.urbantechies.fetch_me_up.ui.logindriver;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -62,6 +64,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     private FusedLocationProviderClient mFusedLocationClient;
     private FirebaseFirestore mDb;
     private UserLocation mUserLocation;
+    private DriverLocation mDriverLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,10 +99,10 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
 
     private void getUserDetails(){
-        if (mUserLocation == null){
-            mUserLocation = new UserLocation();
+        if (mDriverLocation == null){
+            mDriverLocation = new DriverLocation();
 
-            DocumentReference userRef = mDb.collection(getString(R.string.collection_users))
+            DocumentReference userRef = mDb.collection(getString(R.string.collection_drivers))
                     .document(FirebaseAuth.getInstance().getUid());
 
             userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -108,9 +111,9 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                     if(task.isSuccessful()){
                         Log.d(TAG, "onComplete: successfly get the user details");
 
-                        User user = task.getResult().toObject(User.class);
-                        mUserLocation.setUser(user);
-                        ((UserClient)getApplicationContext()).setUser(user);
+                        Driver driver = task.getResult().toObject(Driver.class);
+                        mDriverLocation.setDriver(driver);
+                        ((DriverClient)getApplicationContext()).setDriver(driver);
                         getLastKnownLocation();
                     }
                 }
@@ -124,18 +127,18 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
     private void saveUserLocation(){
 
-        if(mUserLocation != null){
+        if(mDriverLocation != null){
             DocumentReference locationRef = mDb.
-                    collection(getString(R.string.collection_user_locations))
+                    collection(getString(R.string.collection_driver_locations))
                     .document(FirebaseAuth.getInstance().getUid());
 
-            locationRef.set(mUserLocation).addOnCompleteListener(new OnCompleteListener<Void>() {
+            locationRef.set(mDriverLocation).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
                         Log.d(TAG, "saveUserLocation: \ninserted user location into database." +
-                                "\n latitude: " + mUserLocation.getGeo_point().getLatitude() +
-                                "\n longitude: " + mUserLocation.getGeo_point().getLongitude());
+                                "\n latitude: " + mDriverLocation.getGeo_point().getLatitude() +
+                                "\n longitude: " + mDriverLocation.getGeo_point().getLongitude());
                     }
                 }
             });
@@ -158,8 +161,8 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                     Log.d(TAG, "onComplete: latitude: " + geoPoint.getLatitude());
 
 
-                    mUserLocation.setGeo_point(geoPoint);
-                    mUserLocation.setTimestamp(null);
+                    mDriverLocation.setGeo_point(geoPoint);
+                    mDriverLocation.setTimestamp(null);
                     saveUserLocation();
                 }
             }

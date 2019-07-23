@@ -1,4 +1,4 @@
-package com.urbantechies.fetch_me_up.ui;
+package com.urbantechies.fetch_me_up.drivers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +23,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.urbantechies.fetch_me_up.DriverClient;
 import com.urbantechies.fetch_me_up.R;
-import com.urbantechies.fetch_me_up.drivers.HomePage;
+import com.urbantechies.fetch_me_up.model.Driver;
 import com.urbantechies.fetch_me_up.model.User;
 import com.urbantechies.fetch_me_up.UserClient;
 
@@ -128,8 +129,8 @@ public class logindriver extends AppCompatActivity {
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if(task.isSuccessful()){
                                 Log.d(TAG, "onComplete: successfully set the user client.");
-                                User user = task.getResult().toObject(User.class);
-                                ((UserClient)(getApplicationContext())).setUser(user);
+                                Driver driver = task.getResult().toObject(Driver.class);
+                                ((DriverClient)(getApplicationContext())).setDriver(driver);
                             }
                         }
                     });

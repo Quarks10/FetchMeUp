@@ -1,4 +1,4 @@
-package com.urbantechies.fetch_me_up.ui;
+package com.urbantechies.fetch_me_up.drivers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

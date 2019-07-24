@@ -26,8 +26,6 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.urbantechies.fetch_me_up.DriverClient;
 import com.urbantechies.fetch_me_up.R;
 import com.urbantechies.fetch_me_up.model.Driver;
-import com.urbantechies.fetch_me_up.model.User;
-import com.urbantechies.fetch_me_up.UserClient;
 
 import static android.text.TextUtils.isEmpty;
 

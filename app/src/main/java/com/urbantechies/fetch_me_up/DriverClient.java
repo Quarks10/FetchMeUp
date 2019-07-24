@@ -3,7 +3,6 @@ package com.urbantechies.fetch_me_up;
 import android.app.Application;
 
 import com.urbantechies.fetch_me_up.model.Driver;
-import com.urbantechies.fetch_me_up.model.User;
 
 
 public class DriverClient extends Application {

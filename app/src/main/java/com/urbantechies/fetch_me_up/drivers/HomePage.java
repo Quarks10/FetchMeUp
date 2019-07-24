@@ -17,11 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.urbantechies.fetch_me_up.DriverClient;
 import com.urbantechies.fetch_me_up.R;
-import com.urbantechies.fetch_me_up.UserClient;
 import com.urbantechies.fetch_me_up.model.Driver;
 import com.urbantechies.fetch_me_up.model.DriverLocation;
-import com.urbantechies.fetch_me_up.model.User;
-import com.urbantechies.fetch_me_up.model.UserLocation;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -63,7 +60,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     private boolean mLocationPermissionGranted = false;
     private FusedLocationProviderClient mFusedLocationClient;
     private FirebaseFirestore mDb;
-    private UserLocation mUserLocation;
     private DriverLocation mDriverLocation;
 
     @Override

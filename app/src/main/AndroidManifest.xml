@@ -17,8 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".passengers.loginpassenger"></activity>
-        <activity android:name=".passengers.signuppassenger" />
         <activity android:name=".drivers.signupdriver" />
         <activity android:name=".drivers.logindriver" />
         <activity android:name=".drivers.HomePage" />

@@ -3,7 +3,9 @@ package com.urbantechies.fetch_me_up.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Driver implements Parcelable {
+import androidx.annotation.NonNull;
+
+public class User implements Parcelable {
 
     private String first_name;
     private String last_name;
@@ -12,8 +14,10 @@ public class Driver implements Parcelable {
     private String username;
     private String phone_no;
     private String matric_id;
+    private String avatar;
+    private String status;
 
-    public Driver(String first_name, String last_name, String email, String user_id, String username, String phone_no, String matric_id) {
+    public User(String first_name, String last_name, String email, String user_id, String username, String phone_no, String matric_id, String avatar, String status) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
@@ -21,13 +25,15 @@ public class Driver implements Parcelable {
         this.username = username;
         this.phone_no = phone_no;
         this.matric_id = matric_id;
+        this.avatar = avatar;
+        this.status = status;
     }
 
-    public Driver() {
+    public User() {
 
     }
 
-    protected Driver(Parcel in) {
+    protected User(Parcel in) {
         first_name = in.readString();
         last_name = in.readString();
         email = in.readString();
@@ -35,20 +41,21 @@ public class Driver implements Parcelable {
         username = in.readString();
         phone_no = in.readString();
         matric_id = in.readString();
+        avatar = in.readString();
+        status = in.readString();
     }
 
-    public static final Creator<Driver> CREATOR = new Creator<Driver>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
-        public Driver createFromParcel(Parcel in) {
-            return new Driver(in);
+        public User createFromParcel(Parcel in) {
+            return new User(in);
         }
 
         @Override
-        public Driver[] newArray(int size) {
-            return new Driver[size];
+        public User[] newArray(int size) {
+            return new User[size];
         }
     };
-
 
     public String getFirst_name() {
         return first_name;
@@ -106,9 +113,26 @@ public class Driver implements Parcelable {
         this.matric_id = matric_id;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @NonNull
     @Override
     public String toString() {
-        return "Driver{" +
+        return "User{" +
                 "first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", email='" + email + '\'' +
@@ -116,6 +140,8 @@ public class Driver implements Parcelable {
                 ", username='" + username + '\'' +
                 ", phone_no='" + phone_no + '\'' +
                 ", matric_id='" + matric_id + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 
@@ -125,14 +151,16 @@ public class Driver implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(first_name);
-        dest.writeString(last_name);
-        dest.writeString(email);
-        dest.writeString(user_id);
-        dest.writeString(username);
-        dest.writeString(phone_no);
-        dest.writeString(matric_id);
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(first_name);
+        parcel.writeString(last_name);
+        parcel.writeString(email);
+        parcel.writeString(user_id);
+        parcel.writeString(username);
+        parcel.writeString(phone_no);
+        parcel.writeString(matric_id);
+        parcel.writeString(avatar);
+        parcel.writeString(status);
     }
 }
 

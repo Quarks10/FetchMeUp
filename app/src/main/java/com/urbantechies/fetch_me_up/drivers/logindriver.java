@@ -23,9 +23,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.urbantechies.fetch_me_up.DriverClient;
 import com.urbantechies.fetch_me_up.R;
-import com.urbantechies.fetch_me_up.model.Driver;
+import com.urbantechies.fetch_me_up.ServiceOption;
+import com.urbantechies.fetch_me_up.UserClient;
+import com.urbantechies.fetch_me_up.model.User;
 
 import static android.text.TextUtils.isEmpty;
 
@@ -44,6 +45,7 @@ public class logindriver extends AppCompatActivity {
     private Button signup_btn;
 
     private String currMode;
+    private User currUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +62,11 @@ public class logindriver extends AppCompatActivity {
         setupFirebaseAuth();
         hideSoftKeyboard();
 
-        currMode = getIntent().getStringExtra("currMode");
-
 
         signin_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signIn();
-                //Intent toHomepage = new Intent(logindriver.this, HomePage.class);
-               // startActivity(toHomepage);
             }
         });
 
@@ -76,7 +74,6 @@ public class logindriver extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent toSignUp = new Intent(logindriver.this, signupdriver.class);
-                toSignUp.putExtra("currMode", currMode);
                 startActivity(toSignUp);
             }
         });
@@ -115,11 +112,10 @@ public class logindriver extends AppCompatActivity {
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                            .setTimestampsInSnapshotsEnabled(true)
                             .build();
                     db.setFirestoreSettings(settings);
 
-                    DocumentReference userRef = db.collection(getString(R.string.collection_users))
+                    DocumentReference userRef = db.collection(getString(R.string.collection_drivers))
                             .document(user.getUid());
 
                     userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -127,13 +123,13 @@ public class logindriver extends AppCompatActivity {
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if(task.isSuccessful()){
                                 Log.d(TAG, "onComplete: successfully set the user client.");
-                                Driver driver = task.getResult().toObject(Driver.class);
-                                ((DriverClient)(getApplicationContext())).setDriver(driver);
+                                User user = task.getResult().toObject(User.class);
+                                ((UserClient)(getApplicationContext())).setUser(user);
                             }
                         }
                     });
 
-                    Intent intent = new Intent(logindriver.this, HomePage.class);
+                    Intent intent = new Intent(logindriver.this, ServiceOption.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();

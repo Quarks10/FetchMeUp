@@ -26,7 +26,7 @@ public class startup extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent toLogin = new Intent(startup.this, logindriver.class);
-                toLogin.putExtra("currMode", "Driver");
+              //  toLogin.putExtra("currMode", "Driver");
                 startActivity(toLogin);
             }
         });

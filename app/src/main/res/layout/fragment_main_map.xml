@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorPrimary">
 
     <RelativeLayout
@@ -14,13 +15,175 @@
             android:id="@+id/navigation_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </RelativeLayout>
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        <ImageButton
+            android:id="@+id/btn_reset_map"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/White"
+            android:src="@drawable/ic_refresh_black_24dp" />
+
+        <Switch
+            android:id="@+id/switchOnline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Online" />
+
+        <LinearLayout
+            android:id="@+id/trip_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/navigation_map"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="80dp"
+            android:background="#54FFFFFF"
+            android:orientation="vertical"
+            tools:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/status_text_trip_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.7"
+                            android:fontFamily="sans-serif-condensed-medium"
+                            android:text="Pick Up"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/passengerNameTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:fontFamily="sans-serif-condensed-medium"
+                            android:text="Ahmad Syahir"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="24sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/imageView7"
+                            android:layout_width="43dp"
+                            android:layout_height="45dp"
+                            app:srcCompat="@drawable/ic_my_location_black_24dp" />
+
+                        <EditText
+                            android:id="@+id/from_text_trip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="textPersonName" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/imageView676"
+                            android:layout_width="43dp"
+                            android:layout_height="45dp"
+                            app:srcCompat="@drawable/ic_place_black_24dp" />
+
+                        <EditText
+                            android:id="@+id/to_text_trip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="textPersonName" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView35"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:gravity="bottom"
+                        android:paddingLeft="10dp"
+                        android:text="Fare:"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/faretxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="RM 2.00"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="#A6000000" />
+
+            <Button
+                android:id="@+id/btnTrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="#32CD32"
+                android:text="Pick Up Passenger"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

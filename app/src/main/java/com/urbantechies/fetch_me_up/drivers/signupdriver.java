@@ -21,7 +21,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.urbantechies.fetch_me_up.R;
-import com.urbantechies.fetch_me_up.model.Driver;
+import com.urbantechies.fetch_me_up.model.User;
 
 import static android.text.TextUtils.isEmpty;
 import static com.urbantechies.fetch_me_up.util.Check.doStringsMatch;
@@ -78,24 +78,28 @@ public class signupdriver extends AppCompatActivity implements View.OnClickListe
                             Log.d(TAG, "onComplete: AuthState: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                             //insert some default data
-                            Driver driver = new Driver();
-                            driver.setFirst_name(firstName);
-                            driver.setLast_name(lastName);
-                            driver.setEmail(email);
-                            driver.setUsername(email.substring(0, email.indexOf("@")));
-                            driver.setUser_id(FirebaseAuth.getInstance().getUid());
-                            driver.setPhone_no(phoneNo);
-                            driver.setMatric_id(matricID);
+                            User user = new User();
+                            user.setFirst_name(firstName);
+                            user.setLast_name(lastName);
+                            user.setEmail(email);
+                            user.setUsername(firstName);
+                            user.setUser_id(FirebaseAuth.getInstance().getUid());
+                            user.setPhone_no(phoneNo);
+                            user.setMatric_id(matricID);
+                            user.setStatus("Driver");
+                            int avatar = R.drawable.ic_directions_car_black_24dp; // set the default avatar
+                            user.setAvatar(Integer.toString(avatar));
 
                             FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                                     .build();
                             mDb.setFirestoreSettings(settings);
 
+
                             DocumentReference newUserRef = mDb
                                     .collection(getString(R.string.collection_drivers))
                                     .document(FirebaseAuth.getInstance().getUid());
 
-                            newUserRef.set(driver).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            newUserRef.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     hideDialog();

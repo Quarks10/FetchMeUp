@@ -68,7 +68,9 @@ import com.urbantechies.fetch_me_up.model.UserLocation;
 import com.urbantechies.fetch_me_up.util.MyClusterManagerRenderer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -106,6 +108,7 @@ public class MainMapFragment extends Fragment implements
     private EditText mFromTextTrip, mToTextTrip;
     private TextView mTripStatus, mFareText;
     private Button mTripButton;
+    private JobData mJobData;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,6 +143,7 @@ public class MainMapFragment extends Fragment implements
         mFareText = view.findViewById(R.id.faretxt);
         mTripButton = view.findViewById(R.id.btnTrip);
         mTripButton.setOnClickListener(this);
+
 
         initGoogleMap(savedInstanceState);
 
@@ -221,6 +225,7 @@ public class MainMapFragment extends Fragment implements
                         JobData jobData = doc.toObject(JobData.class);
                         if (jobData.getStatus().equals("ready")) {
                             createAlertJobBox(jobData);
+                            mJobData = jobData;
                             break;
                             // mJobReadyList.add(jobData);
                         }
@@ -239,11 +244,17 @@ public class MainMapFragment extends Fragment implements
                 .setCancelable(true)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+
+                        JobData tempjobData = new JobData(jobData.getPassenger(), mUserPosition.getUser(), jobData.getId(), "accepted",
+                                jobData.getPassenger_location(), (new com.google.maps.model.LatLng(mUserPosition.getGeo_point().getLatitude(),
+                                mUserPosition.getGeo_point().getLongitude())), jobData.getDestination_location(), jobData.getDestination(),
+                                jobData.getFare());
+
                         DocumentReference endRef = mDb.collection(getString(R.string.collection_job_ready))
                                 .document(jobData.getId());
 
-                        endRef.update("status", "ongoing")
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        endRef.set(tempjobData)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onComplete: Success Getting the job!");
@@ -256,30 +267,15 @@ public class MainMapFragment extends Fragment implements
                                     }
                                 });
 
-//                        endRef.delete()
-//                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                    @Override
-//                                    public void onSuccess(Void aVoid) {
-//                                        Log.d(TAG, "onComplete: Success Getting the job!");
-//                                    }
-//                                })
-//                                .addOnFailureListener(new OnFailureListener() {
-//                                    @Override
-//                                    public void onFailure(@NonNull Exception e) {
-//                                        Log.w(TAG, "Error deleting document", e);
-//                                    }
-//                                });
+
+
 
 
                         DocumentReference jobRef = mDb.collection(getString(R.string.collection_job_accepted))
                                 .document(mUserPosition.getUser().getUser_id())
-                                .collection("Current Jobs")
+                                .collection("Past Jobs")
                                 .document(jobData.getId());
 
-                        JobData tempjobData = new JobData(jobData.getPassenger(), mUserPosition.getUser(), jobData.getId(), "ongoing",
-                                jobData.getPassenger_location(), (new com.google.maps.model.LatLng(mUserPosition.getGeo_point().getLatitude(),
-                                mUserPosition.getGeo_point().getLongitude())), jobData.getDestination_location(), jobData.getDestination(),
-                                jobData.getFare());
 
                         jobRef.set(tempjobData)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -310,6 +306,84 @@ public class MainMapFragment extends Fragment implements
         final AlertDialog alert = builder.create();
         alert.show();
 
+    }
+
+    private void finishTrip(){
+        DocumentReference endRef = mDb.collection(getString(R.string.collection_job_ready))
+                .document(mJobData.getId());
+
+                        endRef.update("status", "completed")
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "onComplete: Success Getting the job!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error deleting document", e);
+                                    }
+                                });
+
+
+        DocumentReference jobRef = mDb.collection(getString(R.string.collection_job_accepted))
+                .document(mUserPosition.getUser().getUser_id())
+                .collection("Past Jobs")
+                .document(mJobData.getId());
+
+
+        jobRef.update("status", "completed")
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+    }
+
+    private void midTrip(){
+        DocumentReference endRef = mDb.collection(getString(R.string.collection_job_ready))
+                .document(mJobData.getId());
+
+                        endRef.update("status", "ongoing")
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "onComplete: Success Getting the job!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error deleting document", e);
+                                    }
+                                });
+
+
+        DocumentReference jobRef = mDb.collection(getString(R.string.collection_job_accepted))
+                .document(mUserPosition.getUser().getUser_id())
+                .collection("Past Jobs")
+                .document(mJobData.getId());
+
+
+        jobRef.update("status", "completed")
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
     }
 
 
@@ -656,6 +730,9 @@ public class MainMapFragment extends Fragment implements
 
     }
 
+
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -828,6 +905,30 @@ public class MainMapFragment extends Fragment implements
                 break;
             }
             case R.id.btnTrip: {
+
+
+                if(mTripButton.getText().toString().equals("Pick Up Passenger")){
+                    //mTripLayout.setVisibility(View.VISIBLE);
+                    mTripStatus.setText("On Trip");
+                    String status = mTripStatus.getText().toString();
+                    mFromTextTrip.setText("My Location");
+                    mToTextTrip.setText(mJobData.getDestination());
+                    mFareText.setText(mJobData.getFare());
+                    mTripButton.setText("Finish Trip");
+                    midTrip();
+                    calculateDirections2(mJobData, status);
+                }else{
+                    mTripLayout.setVisibility(View.GONE);
+                    mTripStatus.setText("Pick Up");
+                    mFromTextTrip.setText("");
+                    mToTextTrip.setText("");
+                    mFareText.setText("RM 2.00");
+                    mTripButton.setText("PickUpPassenger");
+                    finishTrip();
+                    resetMap();
+                    startUserLocationsRunnable();
+                }
+
 
                 break;
             }

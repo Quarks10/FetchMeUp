@@ -372,7 +372,7 @@ public class MainMapFragment extends Fragment implements
                 .document(mJobData.getId());
 
 
-        jobRef.update("status", "completed")
+        jobRef.update("status", "ongoing")
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -923,7 +923,7 @@ public class MainMapFragment extends Fragment implements
                     mFromTextTrip.setText("");
                     mToTextTrip.setText("");
                     mFareText.setText("RM 2.00");
-                    mTripButton.setText("PickUpPassenger");
+                    mTripButton.setText("Pick Up Passenger");
                     finishTrip();
                     resetMap();
                     startUserLocationsRunnable();

@@ -1,12 +1,15 @@
 package com.urbantechies.fetch_me_up.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
 import com.google.maps.model.LatLng;
 
 import java.util.ArrayList;
 
-public class RideData {
+public class RideData implements Parcelable {
 
 
     private User driver;
@@ -35,6 +38,50 @@ public class RideData {
 
     public RideData() {
     }
+
+    protected RideData(Parcel in) {
+        driver = in.readParcelable(User.class.getClassLoader());
+        passenger = in.createTypedArrayList(User.CREATOR);
+        id = in.readString();
+        status = in.readString();
+        destination = in.readString();
+        pickup = in.readString();
+        date = in.readString();
+        time = in.readString();
+        maxpassenger = in.readString();
+        fare = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(driver, flags);
+        dest.writeTypedList(passenger);
+        dest.writeString(id);
+        dest.writeString(status);
+        dest.writeString(destination);
+        dest.writeString(pickup);
+        dest.writeString(date);
+        dest.writeString(time);
+        dest.writeString(maxpassenger);
+        dest.writeString(fare);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<RideData> CREATOR = new Creator<RideData>() {
+        @Override
+        public RideData createFromParcel(Parcel in) {
+            return new RideData(in);
+        }
+
+        @Override
+        public RideData[] newArray(int size) {
+            return new RideData[size];
+        }
+    };
 
     public User getDriver() {
         return driver;

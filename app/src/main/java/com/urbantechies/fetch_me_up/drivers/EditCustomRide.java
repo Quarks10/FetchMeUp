@@ -2,18 +2,17 @@ package com.urbantechies.fetch_me_up.drivers;
 
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,16 +31,15 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddCustomRide extends Fragment implements View.OnClickListener {
+public class EditCustomRide extends Fragment implements View.OnClickListener {
 
     private String TAG = "AddCustomRide";
 
-    private ArrayList<UserLocation> mUserLocations = new ArrayList<>();
-    private ArrayList<User> mPassenger = new ArrayList<>();
-    private User user;
     private FirebaseFirestore mDb;
     private EditText mDestination, mPickUp, mDate, mTime, mFare, mMaxPassenger;
-    private Button btnaddRide;
+    private Button btnEditRide, btnDeleteRide;
+    private RideData mRideData;
+    private ArrayList<RideData> mRideDataList = new ArrayList<>();
 
 
     @Override
@@ -50,16 +48,14 @@ public class AddCustomRide extends Fragment implements View.OnClickListener {
 
         if (getArguments() != null) {
 
-            final ArrayList<UserLocation> locations = getArguments().getParcelableArrayList(getString(R.string.intent_user_locations));
-            mUserLocations.clear();
-            mUserLocations.addAll(locations);
+            final ArrayList<RideData> tempRideDataList = getArguments().getParcelableArrayList("ridedata");
+            mRideDataList.clear();
+            mRideDataList.addAll(tempRideDataList);
         }
 
 
-        for (UserLocation userLocation : mUserLocations) {
-            if (userLocation.getUser().getUser_id().equals(FirebaseAuth.getInstance().getUid())) {
-                user = userLocation.getUser();
-            }
+        for (RideData tempRideData: mRideDataList) {
+                mRideData = tempRideData;
         }
 
         mDb = FirebaseFirestore.getInstance();
@@ -69,10 +65,13 @@ public class AddCustomRide extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_custom_ride, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_custom_ride, container, false);
 
-        btnaddRide = view.findViewById(R.id.addNewRide);
-        btnaddRide.setOnClickListener(this);
+        btnEditRide = view.findViewById(R.id.UpdateRide);
+        btnEditRide.setOnClickListener(this);
+
+        btnDeleteRide = view.findViewById(R.id.DeleteRide);
+        btnDeleteRide.setOnClickListener(this);
 
         mDestination = view.findViewById(R.id.txt_destination_ride);
         mPickUp = view.findViewById(R.id.txt_pickup_ride);
@@ -81,32 +80,60 @@ public class AddCustomRide extends Fragment implements View.OnClickListener {
         mFare = view.findViewById(R.id.txt_fare_ride);
         mMaxPassenger = view.findViewById(R.id.txt_person_ride);
 
+        mDestination.setText(mRideData.getDestination());
+        mPickUp.setText(mRideData.getPickup());
+        mDate.setText(mRideData.getDate());
+        mTime.setText(mRideData.getTime());
+        mFare.setText(mRideData.getFare());
+        mMaxPassenger.setText(mRideData.getMaxpassenger());
+
+
         return view;
     }
 
-    public static AddCustomRide newInstance() {
-        return new AddCustomRide();
+    public static EditCustomRide newInstance() {
+        return new EditCustomRide();
     }
 
 
 
-    private void addNewTrip(){
+    private void updateTrip(RideData rideData){
 
-        String id = mDb.collection(getString(R.string.collection_ride_available)).document().getId();
-        RideData rideData = new RideData(user,mPassenger, id, "Available", mDestination.getText().toString(),
+        RideData tempRideData = new RideData (rideData.getDriver(),rideData.getPassenger(), rideData.getId(), rideData.getStatus(), mDestination.getText().toString(),
                 mPickUp.getText().toString(), mDate.getText().toString(), mTime.getText().toString(),
                 mMaxPassenger.getText().toString(), mFare.getText().toString());
 
 
         DocumentReference endRef = mDb.collection(getString(R.string.collection_ride_available))
-                .document(id);
+                .document(rideData.getId());
 
-        endRef.set(rideData)
+        endRef.set(tempRideData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         inflateCustomRideFragment();
-                        Log.d(TAG, "onComplete: Added to database ride available!");
+                        Log.d(TAG, "onComplete: finish trip");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
+    }
+
+    private void deleteTrip(RideData rideData){
+
+        DocumentReference endRef = mDb.collection(getString(R.string.collection_ride_available))
+                .document(rideData.getId());
+
+        endRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        inflateCustomRideFragment();
+                        Log.d(TAG, "onComplete: finish trip");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -118,13 +145,9 @@ public class AddCustomRide extends Fragment implements View.OnClickListener {
     }
 
 
-
     private void inflateCustomRideFragment() {
 
         RunCustomRide fragment = RunCustomRide.newInstance();
-        //Bundle bundle = new Bundle();
-       // bundle.putParcelableArrayList(getString(R.string.intent_user_locations), mUserLocations);
-       // fragment.setArguments(bundle);
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment, fragment);
@@ -134,14 +157,16 @@ public class AddCustomRide extends Fragment implements View.OnClickListener {
     }
 
 
-
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.addNewRide: {
-                addNewTrip();
+            case R.id.UpdateRide: {
+                updateTrip(mRideData);
+                break;
+            }
+
+            case R.id.DeleteRide: {
+                deleteTrip(mRideData);
                 break;
             }
         }

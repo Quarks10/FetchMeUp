@@ -106,7 +106,7 @@ public class MainMapFragment extends Fragment implements
     private Switch mSwitchOnline;
     private LinearLayout mTripLayout;
     private EditText mFromTextTrip, mToTextTrip;
-    private TextView mTripStatus, mFareText;
+    private TextView mTripStatus, mFareText, mPassengerNameText;
     private Button mTripButton;
     private JobData mJobData;
 
@@ -139,6 +139,7 @@ public class MainMapFragment extends Fragment implements
         mTripLayout.setVisibility(View.GONE);
         mFromTextTrip = view.findViewById(R.id.from_text_trip);
         mToTextTrip = view.findViewById(R.id.to_text_trip);
+        mPassengerNameText = view.findViewById(R.id.passengerNameTxt);
         mTripStatus = view.findViewById(R.id.status_text_trip_layout);
         mFareText = view.findViewById(R.id.faretxt);
         mTripButton = view.findViewById(R.id.btnTrip);
@@ -224,6 +225,7 @@ public class MainMapFragment extends Fragment implements
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         JobData jobData = doc.toObject(JobData.class);
                         if (jobData.getStatus().equals("ready")) {
+                            mSwitchOnline.setChecked(false);
                             createAlertJobBox(jobData);
                             mJobData = jobData;
                             break;
@@ -287,6 +289,7 @@ public class MainMapFragment extends Fragment implements
                                         mFromTextTrip.setText("My Location");
                                         mToTextTrip.setText(tempjobData.getDestination());
                                         mFareText.setText(tempjobData.getFare());
+                                        mPassengerNameText.setText(tempjobData.getPassenger().getFirst_name());
                                         calculateDirections2(tempjobData, status);
                                     }
                                 })
@@ -923,12 +926,13 @@ public class MainMapFragment extends Fragment implements
                     mFromTextTrip.setText("");
                     mToTextTrip.setText("");
                     mFareText.setText("RM 2.00");
+                    mPassengerNameText.setText("Ahmad Syahir");
                     mTripButton.setText("Pick Up Passenger");
+                    mSwitchOnline.setChecked(true);
                     finishTrip();
-                    resetMap();
+                    addMapMarkers();
                     startUserLocationsRunnable();
                 }
-
 
                 break;
             }

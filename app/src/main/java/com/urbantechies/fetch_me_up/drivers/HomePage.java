@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.urbantechies.fetch_me_up.R;
+import com.urbantechies.fetch_me_up.RunCustomRide;
 import com.urbantechies.fetch_me_up.UserClient;
 import com.urbantechies.fetch_me_up.model.User;
 import com.urbantechies.fetch_me_up.model.UserLocation;
@@ -29,6 +30,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.Menu;
@@ -186,6 +188,8 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     }
 
 
+
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -200,7 +204,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                             selectedFragment = new PassengerRequestFragment();
                             break;
                         case R.id.nav_custom_ride:
-                            selectedFragment = new CustomRideFragment();
+                            selectedFragment = new RunCustomRide();
                             break;
                     }
 

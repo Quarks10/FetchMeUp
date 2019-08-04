@@ -166,10 +166,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                 signOut();
                 return true;
             }
-            case R.id.action_profile: {
-                //    startActivity(new Intent(this, ProfileActivity.class));
-                return true;
-            }
             default: {
                 return super.onOptionsItemSelected(item);
             }
@@ -199,9 +195,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                     switch (menuItem.getItemId()) {
                         case R.id.nav_home:
                             selectedFragment = new RunMap();
-                            break;
-                        case R.id.nav_request:
-                            selectedFragment = new PassengerRequestFragment();
                             break;
                         case R.id.nav_custom_ride:
                             selectedFragment = new RunCustomRide();

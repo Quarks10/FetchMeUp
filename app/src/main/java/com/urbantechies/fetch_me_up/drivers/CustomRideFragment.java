@@ -33,8 +33,6 @@ import com.urbantechies.fetch_me_up.model.RideData;
 import com.urbantechies.fetch_me_up.model.User;
 import com.urbantechies.fetch_me_up.model.UserLocation;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 
@@ -204,9 +202,6 @@ public class CustomRideFragment extends Fragment implements View.OnClickListener
             }
         });
 
-        TextView id = myLayout.findViewById(R.id.id_text_ride);
-        id.setText("ID: " + rideData.getId());
-
         TextView destination = myLayout.findViewById(R.id.destination_text_ride);
         destination.setText("Destination: " + rideData.getDestination());
 
@@ -220,7 +215,7 @@ public class CustomRideFragment extends Fragment implements View.OnClickListener
         datetime.setText("DateTime: " + rideData.getDate() + " " + rideData.getTime());
 
         TextView fare = myLayout.findViewById(R.id.fare_text_ride);
-        fare.setText("Fare: " + rideData.getFare());
+        fare.setText("Fare: RM" + rideData.getFare());
 
         TextView status = myLayout.findViewById(R.id.status_text_ride);
         status.setText("Status: " + rideData.getStatus());

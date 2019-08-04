@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/ride_list_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -54,7 +55,7 @@
                                 android:textSize="18sp" />
 
                             <TextView
-                                android:id="@+id/datetxt"
+                                android:id="@+id/datetime_text_ride"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Date: 12/09/2019"

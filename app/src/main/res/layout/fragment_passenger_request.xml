@@ -52,7 +52,7 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/datetxt"
+                        android:id="@+id/datetime_text_ride"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Date: 11/02/2020"

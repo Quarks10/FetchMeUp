@@ -68,6 +68,10 @@ public class RunCustomRide extends Fragment {
 
     }
 
+    public static RunCustomRide newInstance() {
+        return new RunCustomRide();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -6,11 +6,11 @@
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/parentViewApplications"
+        android:id="@+id/driverViewRide"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="#D7E7F2"
+        app:cardBackgroundColor="@color/lightmain"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp">
 
@@ -26,22 +26,15 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/parentNametxt"
+                    android:id="@+id/id_text_ride"
                     android:layout_width="266dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Ahmad Syahir "
+                    android:text="ID : #1235623"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <RatingBar
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:stepSize="0.1" />
             </LinearLayout>
 
             <LinearLayout
@@ -58,47 +51,47 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/childNametxt"
+                        android:id="@+id/destination_text_ride"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Child's Name: Syahirah"
+                        android:text="Destination: Penang"
                         android:textColor="@android:color/background_dark" />
 
                     <TextView
-                        android:id="@+id/childEdulvltxt"
+                        android:id="@+id/pickup_text_ride"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Standard: 5"
+                        android:text="Pick Up: V4 Cafe"
                         android:textColor="@android:color/background_dark" />
 
                     <TextView
-                        android:id="@+id/subjecttxt"
+                        android:id="@+id/passenger_text_ride"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Mathematics"
+                        android:text="Passenger: 0/3"
                         android:textColor="@android:color/background_dark" />
 
                     <TextView
-                        android:id="@+id/datetxt"
+                        android:id="@+id/datetime_text_ride"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Date Start: 12/09/19"
-                        android:textColor="@android:color/background_dark" />
-
-
-                    <TextView
-                        android:id="@+id/sessiontxt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Session: Monday, 8.00pm - 10.00pm"
+                        android:text="Date: 12/09/19"
                         android:textColor="@android:color/background_dark" />
 
 
                     <TextView
-                        android:id="@+id/addresstxt"
+                        android:id="@+id/fare_text_ride"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Address: {Parent Address}"
+                        android:text="Time: 14:00"
+                        android:textColor="@android:color/background_dark" />
+
+
+                    <TextView
+                        android:id="@+id/status_text_ride"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Status: OnGoing"
                         android:textColor="@android:color/background_dark" />
 
 
@@ -112,22 +105,22 @@
                     android:orientation="vertical">
 
                     <Button
-                        android:id="@+id/contactParentbtn"
+                        android:id="@+id/edit_ride_btn"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_margin="5dp"
-                        android:background="#5A5AD0"
-                        android:text="Contact Parent"
-                        android:textColor="@android:color/background_light" />
+                        android:background="@color/colorAccent"
+                        android:text="Edit Ride"
+                        android:textColor="@android:color/background_dark" />
 
                     <Button
-                        android:id="@+id/applybtn"
+                        android:id="@+id/finishRide"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_margin="5dp"
-                        android:background="#5A5AD0"
-                        android:text="Apply"
-                        android:textColor="@android:color/background_light" />
+                        android:background="@color/colorAccent"
+                        android:text="Ride Complete"
+                        android:textColor="@android:color/background_dark" />
                 </LinearLayout>
 
             </LinearLayout>

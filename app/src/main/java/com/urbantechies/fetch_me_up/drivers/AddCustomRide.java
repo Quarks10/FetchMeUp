@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.urbantechies.fetch_me_up.R;
+import com.urbantechies.fetch_me_up.RunCustomRide;
 import com.urbantechies.fetch_me_up.model.RideData;
 import com.urbantechies.fetch_me_up.model.User;
 import com.urbantechies.fetch_me_up.model.UserLocation;
@@ -118,7 +119,7 @@ public class AddCustomRide extends Fragment implements View.OnClickListener {
 
     private void inflateCustomRideFragment() {
 
-        CustomRideFragment fragment = CustomRideFragment.newInstance();
+        RunCustomRide fragment = RunCustomRide.newInstance();
         //Bundle bundle = new Bundle();
        // bundle.putParcelableArrayList(getString(R.string.intent_user_locations), mUserLocations);
        // fragment.setArguments(bundle);
